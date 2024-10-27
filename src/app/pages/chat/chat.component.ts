@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewChecked, OnInit } from '@angular/core';
+import { SupabaseService } from '../service/supabase.service';
 import {
   trigger,
   transition,
@@ -7,9 +8,9 @@ import {
 } from '@angular/animations';
 
 interface Message {
-  text: string;
-  sent: boolean;
-  id: number;
+  content: string;
+  sender: string;
+  created_at: string;
 }
 
 @Component({
@@ -28,31 +29,21 @@ interface Message {
     ]),
   ],
 })
-export class ChatComponent implements AfterViewChecked {
-  messages: Message[] = [
-    {
-      text: 'test', sent: false, id: 100
-    },
-    {
-      text: 'Meee', sent: true, id: 69
-
-    },
-    {
-      text: 'this is me', sent: true, id: 69
-
-    },
-    {
-      text: 'this is you', sent: false, id: 100
-
-    },
-    {
-      text: 'Yupp', sent: false, id: 100
-
-    }
-  ];
+export class ChatComponent implements OnInit, AfterViewChecked {
+  messages: Message[] = [];
   inputMessage = '';
+   senderId = 'User123'; // Temporary sender ID for the example
 
   @ViewChild('chatBody') private chatBody!: ElementRef;
+
+  constructor(private supabaseService: SupabaseService) {}
+
+  ngOnInit() {
+    this.supabaseService.getMessages().subscribe((messages) => {
+      this.messages = messages;
+    });
+    this.supabaseService.loadMessages();
+  }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
@@ -60,27 +51,12 @@ export class ChatComponent implements AfterViewChecked {
 
   sendMessage() {
     if (this.inputMessage.trim()) {
-      this.messages.push({ text: this.inputMessage, sent: true, id: 69 });
+      this.supabaseService.sendMessage(this.inputMessage, this.senderId);
       this.inputMessage = '';
-      this.reply();
     }
   }
 
-  reply() {
-    setTimeout(() => {
-      const responses = [
-        "Hello! How can I help?",
-        "Great to hear from you!",
-        "I'm here to chat.",
-        "Feel free to ask anything!",
-        "What's on your mind?",
-      ];
-      const replyMessage = responses[Math.floor(Math.random() * responses.length)];
-      this.messages.push({ text: replyMessage, sent: false, id: 100 });
-    }, 1000);
-  }
-
-  // Method to scroll to the bottom of the chat
+  // Auto-scroll to the bottom of the chat
   private scrollToBottom(): void {
     try {
       this.chatBody.nativeElement.scrollTop = this.chatBody.nativeElement.scrollHeight;

@@ -8,6 +8,8 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ButtonModule } from 'primeng/button'
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     BrowserAnimationsModule,
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    ButtonModule,
+    InputTextModule
   ],
   providers: [],
   bootstrap: [AppComponent]

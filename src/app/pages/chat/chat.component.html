@@ -1,28 +1,48 @@
 <div class="chat-container">
     <div class="chat-header">
-      <h2>Chat with AI</h2>
+        <div class="headerItems flex align-items-center justify-content-between">
+
+            <div class="w-2 flex align-items-center gap-3">
+
+                <i class="pi pi-angle-left ml-4 text-3xl"></i>
+
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOxYHstHPaqXtUZFjxrqn88O3mGfNcNXMlwQ&s"
+                    class="profImg w-9 h-9 border-circle" alt="">
+
+                <div class="userName">
+                    <p class=" w-9rem">User Name</p>
+                </div>
+            </div>
+
+            <div class="iconBtns m-4 flex gap-4">
+                <i class="pi pi-video text-2xl"></i>
+                <i class="pi pi-phone text-2xl"></i>
+
+            </div>
+        </div>
     </div>
-  
+
     <div class="chat-body" #chatBody>
-      <div
-        *ngFor="let message of messages"
-        class="message"
-        [class.sent]="message.id == 69"
-        [@slideInOut]>
-        <p>{{ message.text }}</p>
-      </div>
+        <div *ngFor="let message of messages" class="message" [class]="message.sender === senderId ? 'sent' : ''"
+            [@slideInOut]>
+            <p>{{ message.content }}</p>
+        </div>
     </div>
-  
-    <div class="chat-input">
-      <input
-        type="text"
-        [(ngModel)]="inputMessage"
-        placeholder="Type a message..."
-        (keyup.enter)="sendMessage()"
-      />
-      <button (click)="sendMessage()">
-        <i class="pi pi-send"></i>
-      </button>
+
+    <div class="chat-input flex justify-content-between">
+        <span class="p-input-icon-right flex align-items-center">
+            <input pInputText class="w-20rem h-3rem" style="border-radius: 30px;" type="text" [(ngModel)]="inputMessage"
+                placeholder="Type a message..." (keyup.enter)="sendMessage()" />
+
+            <i class="pi pi-microphone text-2xl align-text-center"></i>
+        </span>
+        <i class="pi pi-images text-2xl"></i>
+
+        <i class="pi pi-send text-2xl" (click)="sendMessage()"></i>
+        <!-- <button pButton class="border-circle h-1 flex justify-content-center align-items-center" (click)="sendMessage()">
+          </button> -->
+
     </div>
-  </div>
-  
+
+
+</div>
