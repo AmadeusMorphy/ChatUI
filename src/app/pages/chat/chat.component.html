@@ -1,0 +1,28 @@
+<div class="chat-container">
+    <div class="chat-header">
+      <h2>Chat with AI</h2>
+    </div>
+  
+    <div class="chat-body" #chatBody>
+      <div
+        *ngFor="let message of messages"
+        class="message"
+        [class.sent]="message.id == 69"
+        [@slideInOut]>
+        <p>{{ message.text }}</p>
+      </div>
+    </div>
+  
+    <div class="chat-input">
+      <input
+        type="text"
+        [(ngModel)]="inputMessage"
+        placeholder="Type a message..."
+        (keyup.enter)="sendMessage()"
+      />
+      <button (click)="sendMessage()">
+        <i class="pi pi-send"></i>
+      </button>
+    </div>
+  </div>
+  
